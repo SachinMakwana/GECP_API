@@ -1,0 +1,29 @@
+{
+  "name": "gecp-node-api",
+  "version": "1.0.0",
+  "description": "API For GECP using node, express and mongodb",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "EXPRESS",
+    "NODE.JS",
+    "MONGODB",
+    "GECP",
+    "API"
+  ],
+  "author": "Dsquare",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.26",
+    "mongoose-sequence": "^5.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
