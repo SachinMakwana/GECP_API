@@ -1,21 +1,22 @@
 module.exports = (app) => {
-    const dept = require('../controllers/department.controller.js');
+    const gecp = require('../controller/department.controller');
 
-    // Create a new Note
-    app.post('/dept', dept.create);
+    // Create a department
+    app.post('/department', gecp.create);
 
-    // Retrieve all dept
-    app.get('/dept', dept.findAll);
+    //Retrieve all department
+    app.get('/department', gecp.findAll);
 
-    // Retrieve a single Dept with code
-    app.get('/dept/:code', dept.findOneByCode);
-    
-    // Retrieve a single Dept with name
-    app.get('/dept/name/:name', dept.findOneByName);
+    // // Retrieve a department with code
+    app.get('/department/:code', gecp.findDept);
 
-    // Update a Department with code
-    app.put('/dept/:code', dept.updateByCode);
+    // // Retrieve a department with name
+    app.get('/department/byname/:name', gecp.findName);
 
-    // Delete a Department with code
-    app.delete('/dept/:code', dept.deleteByCode);
+
+    // // Update departmentwith id
+    app.put('/department/:deptId', gecp.update);
+
+    // // Delete a department with id
+    app.delete('/department/:deptId', gecp.delete);
 }

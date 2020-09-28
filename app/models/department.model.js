@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const DeptSchema = mongoose.Schema({
-    _id: Number,
-    code: { type: mongoose.Schema.Types.Number, ref: 'Subject' },
+const DepartmentSchema = mongoose.Schema({
+    _id: { type: mongoose.Schema.Types.Number, ref: 'Subject' },
+    code: Number,
     name: String,
     image: String,
     about: String
-},{
+}, {
     _id: false
 });
+DepartmentSchema.plugin(AutoIncrement, { id: 'dept_id_counter' });
 
-DeptSchema.plugin(AutoIncrement, { id: 'department_model_id_counter' });
-module.exports = mongoose.model('Department', DeptSchema);
+module.exports = mongoose.model('department', DepartmentSchema);
