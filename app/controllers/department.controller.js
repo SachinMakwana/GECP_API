@@ -1,162 +1,146 @@
-const Dept = require('../models/department.model.js');
+const department = require('../models/department.model');
 
-//create and save a new department details
+// Create new department
 exports.create = (req, res) => {
-    //validate request
-    if (!req.body.code || !req.body.name || !req.body.about) {
+    // Validate request
+    if (!req.body.code) {
         return res.status(400).send({
-            message: "Please insert data"
+            message: "Code can not be empty"
         });
     }
 
-    //Create a department
-    const dept = new Dept({
+    // Create a dept
+    const dept = new department({
         code: req.body.code,
         name: req.body.name,
         image: req.body.image,
         about: req.body.about
     });
 
-    //save the dept
+    // Save dept in the database
     dept.save()
         .then(data => {
             res.send(data);
         }).catch(err => {
             res.status(500).send({
-                message: err.message || "Error occured while creating databse."
+                message: err.message || "Some error occurred while creating the dept."
             });
         });
 };
 
 
-//find all departments
+// Retrieve and return all dept from the database.
 exports.findAll = (req, res) => {
-    Dept.find()
-        .then(dept => {
-            res.send(dept);
+    department.find()
+        .then(gecps => {
+            res.send(gecps);
         }).catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving departments."
+                message: err.message || "Some error occurred while retrieving department."
             });
         });
+
 };
 
-//find a single department with code or name
-/*exports.findOne = (req,res) => {
-    Dept.findOne({code: req.params.code},function(err,dept){
-        if(!dept) {
-            if(err){
+// // Find department with a code
+exports.findDept = (req, res) => {
+    department.findOne({ code: req.params.code })
+        .then(gecp => {
+            if (!gecp) {
                 return res.status(404).send({
-                    message: "Department not found with id " + req.params.code
+                    message: "department not found  " + req.params.code
                 });
             }
-            return res.status(404).send({
-                message: "Department Not found with code " + req.params.code
-            });
-        }
-        res.send(dept);
-    });
-};*/
-
-//find a single department with code
-exports.findOneByCode = (req, res) => {
-    Dept.findOne({ code: req.params.code })
-        .then(dept => {
-            if (!dept) {
-                return res.status(404).send({
-                    message: "Department not found with code " + req.params.code
-                });
-            }
-            res.send(dept);
+            res.send(gecp);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
-                    message: "Department not found with code " + req.params.code
+                    message: "department not found " + req.params.code
                 });
             }
             return res.status(500).send({
-                message: "Error retrieving department with code " + req.params.code
+                message: "Error retrieving code " + req.params.code
             });
         });
+
 };
-
-
-//find a single department with name
-exports.findOneByName = (req, res) => {
-    Dept.findOne({ name: { $regex: req.params.name, $options: "i" } })
-        .then(dept => {
-            if (!dept) {
+// // Find departname with a name
+exports.findName = (req, res) => {
+    department.findOne({ name: req.params.name })
+        .then(gecp => {
+            if (!gecp) {
                 return res.status(404).send({
-                    message: "Department not found with name " + req.params.name
+                    message: "department not found  " + req.params.name
                 });
             }
-            res.send(dept);
+            res.send(gecp);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
-                    message: "Department not found with name " + req.params.name
+                    message: "code not found " + req.params.name
                 });
             }
             return res.status(500).send({
-                message: "Error retrieving department with name " + req.params.name
+                message: "Error retrieving department " + req.params.name
             });
         });
+
 };
-
-
-exports.updateByCode = (req,res) => {
-    //validate request
-    if (!req.body.name || !req.body.image || !req.body.about) {
+// // Update a department identified by the code in the request
+exports.update = (req, res) => {
+    // Validate Request
+    if (!req.body.code) {
         return res.status(400).send({
-            message: "Please insert data of department in body"
+            message: "code content can not be empty"
         });
     }
 
-    //updating
-    Dept.findOneAndUpdate({code : req.params.code},{
+    // Find and update it with the request body
+    department.findByIdAndUpdate(req.params.deptId, {
+        code: req.body.code,
         name: req.body.name,
         image: req.body.image,
         about: req.body.about
-    },{
-        new:true
-    })
-    .then(dept => {
-        if (!dept) {
-            return res.status(404).send({
-                message: "Department not found with code " + req.params.code
+    }, { new: true })
+        .then(gecp => {
+            if (!gecp) {
+                return res.status(404).send({
+                    message: "department not found with id " + req.params.deptId
+                });
+            }
+            res.send(gecp);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "department not found with id " + req.params.deptId
+                });
+            }
+            return res.status(500).send({
+                message: "Error updating department with id " + req.params.deptId
             });
-        }
-        res.send(dept);
-    }).catch(err => {
-        if (err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Department not found with code " + req.params.code
-            });
-        }
-        return res.status(500).send({
-            message: "Error retrieving department with code " + req.params.code
         });
-    });
+
 };
 
-//delete by dept code
-exports.deleteByCode = (req,res) => {
-    Dept.deleteOne({code: req.params.code})
-    .then(dept => {
-        if (!dept) {
-            return res.status(404).send({
-                message: "Department not found with code " + req.params.code
+// // Delete a code with the specified code in the request
+exports.delete = (req, res) => {
+    department.findByIdAndRemove(req.params.deptId)
+        .then(gecp => {
+            if (!gecp) {
+                return res.status(404).send({
+                    message: "department not found with id " + req.params.deptId
+                });
+            }
+            res.send({ message: " deleted successfully!" });
+        }).catch(err => {
+            if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                return res.status(404).send({
+                    message: "department not found with id " + req.params.deptId
+                });
+            }
+            return res.status(500).send({
+                message: "Could not delete department with id " + req.params.deptId
             });
-        }
-        res.send(dept);
-    }).catch(err => {
-        if (err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Department not found with code " + req.params.code
-            });
-        }
-        return res.status(500).send({
-            message: "Error retrieving department with code " + req.params.code
         });
-    });
+
 };
