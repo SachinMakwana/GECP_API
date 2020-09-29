@@ -1,6 +1,6 @@
 module.exports = (app) => {
 
-    const contactInfo = require('../controller/contactInfo.controller.js');
+    const contactInfo = require('../controllers/contactInfo.controller.js');
 
     app.post('/contactInfo', contactInfo.create);
 

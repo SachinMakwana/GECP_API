@@ -1,6 +1,6 @@
 const nss = require('../models/nss.models');
 const fs = require('fs');
-const common = require('../common');
+const common = require('../../common');
 //create and save nss info
 
 //create and save a new nss info

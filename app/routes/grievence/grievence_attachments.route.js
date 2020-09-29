@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const g_attachments = require('../../controller/grievence/grievence_attachments.controller');
+    const g_attachments = require('../../controllers/grievence/grievence_attachments.controller');
 
     app.post('/grievence_attachments', g_attachments.create);
 

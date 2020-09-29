@@ -1,5 +1,5 @@
 const gallery = require('../models/gallery.models');
-const common = require('../common');
+const common = require('../../common');
 //create and save gallery info
 
 exports.create = (req,res) =>{

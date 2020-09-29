@@ -1,5 +1,5 @@
 module.exports = (app) => {
-     const campus = require('../controller/campus.controller.js');
+     const campus = require('../controllers/campus.controller.js');
 
      app.post('/campus', campus.create);
 

@@ -1,5 +1,5 @@
 const news = require('../models/news.models');
-const common = require('../common');
+const common = require('../../common');
 //create and save news
 
 exports.create = (req,res) =>{

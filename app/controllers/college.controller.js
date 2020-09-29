@@ -1,5 +1,5 @@
 const college = require('../models/college.models');
-const common = require('../common');
+const common = require('../../common');
 //create and save college info
 
 exports.create = (req,res) =>{

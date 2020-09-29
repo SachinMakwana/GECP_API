@@ -1,6 +1,6 @@
 const womenattach = require('../../models/women_cell/womenattach.models');
 const fs = require('fs');
-const common = require('../../common');
+const common = require('../../../common');
 //create
 
 //create and save 

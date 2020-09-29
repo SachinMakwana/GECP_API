@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const gecp = require('../controller/department.controller');
+    const gecp = require('../controllers/department.controller');
 
     // Create a department
     app.post('/department', gecp.create);

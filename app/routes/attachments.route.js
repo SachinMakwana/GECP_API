@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const attachments = require('../controller/attachments.controller.js');
+    const attachments = require('../controllers/attachments.controller.js');
 
     app.post('/attachments', attachments.create);
 

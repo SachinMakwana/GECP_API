@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const s_attachments = require('../../controller/ssip/ssip_attachments.controller');
+    const s_attachments = require('../../controllers/ssip/ssip_attachments.controller');
 
     app.post('/ssip_attachments', s_attachments.create);
 

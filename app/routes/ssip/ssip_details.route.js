@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const s_details = require('../../controller/ssip/ssip_details.controller');
+    const s_details = require('../../controllers/ssip/ssip_details.controller');
 
     app.post('/ssip_details', s_details.create);
 

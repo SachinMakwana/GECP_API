@@ -58,13 +58,12 @@ require('./app/routes/achievements.route.js')(app);
 require('./app/routes/campus.route.js')(app);
 require('./app/routes/contactInfo.route.js')(app);
 require('./app/routes/attachments.route.js')(app);
-require('./routes/gecp.routes')(app);
-require('./routes/subject.routes')(app);
-require('./routes/college.routes')(app);
-require('./routes/gallery.routes')(app);
-require('./routes/news.routes')(app);
-require('./routes/nss.routes')(app);
-require('./routes/ss.routes')(app);
+require('./app/routes/subject.route')(app);
+require('./app/routes/college.routes')(app);
+require('./app/routes/gallery.routes')(app);
+require('./app/routes/news.routes')(app);
+require('./app/routes/nss.routes')(app);
+require('./app/routes/ss.routes')(app);
 require('./app/routes/users.route.js')(app);
 
 require('./app/routes/placement/placement.route.js')(app);
@@ -75,9 +74,9 @@ require('./app/routes/anti-ragging/anti_ragging_details.route')(app);
 require('./app/routes/anti-ragging/anti_ragging_attachments.route')(app);
 require('./app/routes/anti-ragging/anti_ragging_memberDetails.route')(app);
 
-require('./routes/women_cell/women_detail.routes')(app);
-require('./routes/women_cell/wcmember.routes')(app);
-require('./routes/women_cell/womenattach.routes')(app);
+require('./app/routes/women_cell/women_detail.routes')(app);
+require('./app/routes/women_cell/wcmember.routes')(app);
+require('./app/routes/women_cell/womenattach.routes')(app);
 
 require('./app/routes/ssip/ssip_details.route')(app);
 require('./app/routes/ssip/ssip_memberDetails.route')(app);

@@ -1,6 +1,6 @@
 const ss = require('../models/ss.models');
 const fs = require('fs');
-const common = require('../common');
+const common = require('../../common');
 
 
 //create and save a new ss details

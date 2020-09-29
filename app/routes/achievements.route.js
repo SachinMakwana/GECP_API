@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const achieve = require('../controller/achievements.controller.js');
+    const achieve = require('../controllers/achievements.controller');
 
     app.post('/achieve', achieve.create);
 

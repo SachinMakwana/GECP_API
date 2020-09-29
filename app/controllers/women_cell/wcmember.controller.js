@@ -1,5 +1,5 @@
 const wcmember = require('../../models/women_cell/wcmember.model');
-const common = require('../../common');
+const common = require('../../../common');
 // Create and Save a new wcm
 exports.create = (req, res) => {
 	// Validate request

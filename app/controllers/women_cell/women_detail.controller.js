@@ -1,5 +1,5 @@
 const womendetail = require('../../models/women_cell/women_detail.models');
-const common = require('../../common');
+const common = require('../../../common');
 //create and save wd info
 
 exports.create = (req,res) =>{
