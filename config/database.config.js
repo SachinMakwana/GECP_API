@@ -1,3 +1,3 @@
 module.exports = {
-    url : "mongodburl"
+    url : "mongodb+srv://dbDsquare:dbDsquareMongo@dsquare.kjrng.gcp.mongodb.net/gecp"
 }
