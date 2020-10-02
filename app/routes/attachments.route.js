@@ -7,7 +7,7 @@ module.exports = (app) => {
 
     app.get('/attachments/:_id', attachments.findById);
 
-    app.put('/attachments/id/:_id', attachments.updateById);
+    app.put('/attachments/:_id', attachments.updateById);
 
     app.delete('/attachments/:_id', attachments.deleteById);    
     
