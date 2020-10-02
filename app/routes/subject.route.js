@@ -1,33 +1,25 @@
 module.exports = (app) => {
-    const sub = require('../controllers/subject.controller.js');
+    const subject = require('../controllers/subject.controller.js');
 
-    //Create or add a new subject
-    app.post('/subject', sub.create);
+    // Create a new subject
+    app.post('/subject', subject.create);
 
-    //find all subjects
-    app.get('/subject', sub.findAll);
+    // // Retrieve all subject
+    app.get('/subject', subject.findAll);
 
-    //find by subject code
-    app.get('/subject/:code', sub.findBySubCode);
+    // // Retrieve a single subject with code
+    app.get('/subject/bycode/:code', subject.findCode);
 
-    //find by subject knownAS
-    app.get('/subject/knownAs/:knownAs', sub.findBySubName);
+    // // Retrieve a single subject with known_As
+    app.get('/subject/byname/:knownAs', subject.findName);
 
-    //find subject by deptCode and sem
-    app.get('/subject/:deptCode/:sem', sub.findByDeptAndSem);
+    // // Retrieve a single subject with department and semester
+    app.get('/subject/bydeptsem/:dept_Id/:semester', subject.findDeptSem);
 
-    //update by subject code
-    app.put('/subject/update/:code', sub.updateByCode);
+    // // Update a subject with id
+    app.put('/subject/:subjectId', subject.update);
 
-    //update by subject knownAs
-    app.put('/subject/updateByKnownAs/:knownAs', sub.updateByName);
 
-    //delete by subject code
-    app.delete('/subject/delete/:code', sub.deleteByCode);
-
-    //delete by subject knownAs
-    app.delete('/subject/deleteByKnownAs/:knownAs', sub.deleteByName);
-
-    //delete by subject knownAs
-    app.delete('/subject/delete/:deptCode/:sem', sub.deleteByDeptAndSem);
+    // // Delete a subject with code
+    app.delete('/subject/:subjectId', subject.delete);
 }
