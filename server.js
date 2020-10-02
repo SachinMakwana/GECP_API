@@ -14,7 +14,7 @@ app.use(bodyParser.json({ limit: '50mb', extended: true }))
 //enabling cors to allow interaction from other domain
 app.use(cors({ origin: 'http://localhost:4200' }))
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();

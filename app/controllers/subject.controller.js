@@ -1,5 +1,5 @@
 const Subject = require('../models/subject.model.js');
-const common = require('../../common.js');
+const common = require('../../common');
 
 exports.create = (req, res) => {
 
@@ -115,16 +115,15 @@ exports.updateByCode = (req, res) => {
         });
     }
 
-    Subject.findOneAndUpdate({ code: req.params.code },
-        {
+    Subject.findOneAndUpdate({ code: req.params.code }, {
             code: req.body.code,
             name: req.body.name || name,
             knownAs: req.body.knownAs || knownAs,
             sem: req.body.sem || sem,
             deptCode: req.body.deptCode || deptCode
         }, {
-        new: true
-    })
+            new: true
+        })
         .then(data => {
             if (!data) {
                 return res.status(404).send({
@@ -153,16 +152,15 @@ exports.updateByName = (req, res) => {
         });
     }
 
-    Subject.findOneAndUpdate({ knownAs: { $regex: req.params.knownAs, $options: "i" } },
-        {
+    Subject.findOneAndUpdate({ knownAs: { $regex: req.params.knownAs, $options: "i" } }, {
             code: req.body.code || code,
             name: req.body.name || name,
             knownAs: req.body.knownAs || knownAs,
             sem: req.body.sem || sem,
             deptCode: req.body.deptCode || deptCode
         }, {
-        new: true
-    })
+            new: true
+        })
         .then(data => {
             if (!data) {
                 return res.status(404).send({
@@ -229,22 +227,20 @@ exports.deleteByName = (req, res) => {
 //delete many subjects of specific sem and department
 exports.deleteByDeptAndSem = (req, res) => {
     Subject.deleteMany({ deptCode: req.params.deptCode, sem: req.params.sem })
-    .then(data => {
-        if (data.deletedCount == 0) {
+        .then(data => {
+            if (data.deletedCount == 0) {
+                return res.status(404).send({
+                    message: "Subjects Not Found With Entered Dept " + req.params.deptCode + " And Sem " + req.params.sem + ".!"
+                });
+            }
+            //res.send(data);
+
             return res.status(404).send({
-                message: "Subjects Not Found With Entered Dept " + req.params.deptCode + " And Sem " + req.params.sem + ".!"
+                message: "Subjects Deleted Successfully With Entered Dept " + req.params.deptCode + " And Sem " + req.params.sem + ".!"
             });
-        }
-        //res.send(data);
-
-        return res.status(404).send({
-            message: "Subjects Deleted Successfully With Entered Dept " + req.params.deptCode + " And Sem " + req.params.sem + ".!"
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving subjects."
+            });
         });
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving subjects."
-        });
-    });
 };
-
-
