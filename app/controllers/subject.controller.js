@@ -1,250 +1,179 @@
-const Subject = require('../models/subject.model.js');
-const common = require('../../common.js');
-
+const subject = require('../models/subject.model');
+const common = require('../common');
+// Create and Save a new Subject
 exports.create = (req, res) => {
-
-    //validate request
-    if (!(req.body.code || req.body.name || req.body.knownAs || req.body.sem || req.body.deptCode)) {
+	// Validate request
+    if(!req.body.code) {
         return res.status(400).send({
-            message: "Please insert data"
+            message: "code can not be empty"
         });
     }
 
-    //create a subject
-    const sub = new Subject({
+    // Create a Subject
+    const Subject = new subject({
         code: req.body.code,
-        name: req.body.name,
-        knownAs: req.body.knownAs,
-        sem: req.body.sem,
-        deptCode: req.body.deptCode,
-        createdAtInt: common.getDateInt(),
-        updatedAtInt: common.getDateInt()
+       name: req.body.name,
+       knownAs:req.body.knownAs,
+       semester:req.body.semester,
+       deptName:req.body.deptName,
+
     });
 
-    //save the subject
-    sub.save()
-        .then(data => {
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Error occured while creating databse."
-            });
-        });
-};
-
-//find all subjects
-exports.findAll = (req, res) => {
-    Subject.find()
-        .then(data => {
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while retrieving subjects."
-            });
-        });
-};
-
-//find by subject code
-exports.findBySubCode = (req, res) => {
-    Subject.findOne({ code: req.params.code })
-        .then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Subject not found with code " + req.params.code
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Subject not found with code " + req.params.code
-                });
-            }
-            return res.status(500).send({
-                message: "Error retrieving subject with code " + req.params.code
-            });
-        });
-};
-
-//find subject by name (known as)
-exports.findBySubName = (req, res) => {
-    Subject.findOne({ knownAs: { $regex: req.params.knownAs, $options: "i" } })
-        .then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Subject not found with code " + req.params.knownAs
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Subject not found with name " + req.params.knownAs
-                });
-            }
-            return res.status(500).send({
-                message: "Error retrieving subject with name " + req.params.knownAs
-            });
-        });
-};
-
-//find Subject By Dept And Sem
-exports.findByDeptAndSem = (req, res) => {
-    Subject.find({ sem: req.params.sem, deptCode: req.params.deptCode })
-        .then(data => {
-            if (data.length == 0) {
-                return res.status(404).send({
-                    message: "Subjects Not Found With Entered Dept " + req.params.deptCode + " And Sem " + req.params.sem + ".!"
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while retrieving subjects."
-            });
-        });
-};
-
-
-//update subject by code
-exports.updateByCode = (req, res) => {
-    //validate request
-    if (!(req.body.name || req.body.knownAs || req.body.sem || req.body.deptCode)) {
-        return res.status(400).send({
-            message: "Please insert data, Subject data can't be empty in body."
-        });
-    }
-
-    Subject.findOneAndUpdate({ code: req.params.code },
-        {
-            code: req.body.code,
-            name: req.body.name || name,
-            knownAs: req.body.knownAs || knownAs,
-            sem: req.body.sem || sem,
-            deptCode: req.body.deptCode || deptCode
-        }, {
-        new: true
-    })
-        .then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Subject not found with code " + req.params.code
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Subject not found with name " + req.params.code
-                });
-            }
-            return res.status(500).send({
-                message: "Error retrieving subject with code " + req.params.code
-            });
-        });
-};
-
-//update subject by knownAs
-exports.updateByName = (req, res) => {
-    //validate request
-    if (!(req.body.code || req.body.name || req.body.sem || req.body.deptCode)) {
-        return res.status(400).send({
-            message: "Please insert data, Subject data can't be empty in body."
-        });
-    }
-
-    Subject.findOneAndUpdate({ knownAs: { $regex: req.params.knownAs, $options: "i" } },
-        {
-            code: req.body.code || code,
-            name: req.body.name || name,
-            knownAs: req.body.knownAs || knownAs,
-            sem: req.body.sem || sem,
-            deptCode: req.body.deptCode || deptCode
-        }, {
-        new: true
-    })
-        .then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Subject not found with knownAs " + req.params.knownAs
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Subject not found with knownAs " + req.params.knownAs
-                });
-            }
-            return res.status(500).send({
-                message: "Error retrieving subject with knownAs " + req.params.knownAs
-            });
-        });
-};
-
-//delete subject by code
-exports.deleteByCode = (req, res) => {
-    Subject.deleteOne({ code: req.params.code })
-        .then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Subject not found with code " + req.params.code
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Subject not found with code " + req.params.code
-                });
-            }
-            return res.status(500).send({
-                message: "Error deleting subject with code " + req.params.code
-            });
-        });
-};
-
-//delete subject by code
-exports.deleteByName = (req, res) => {
-    Subject.deleteOne({ knownAs: { $regex: req.params.knownAs, $options: "i" } })
-        .then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Subject not found with name " + req.params.knownAs
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Subject not found with name " + req.params.knownAs
-                });
-            }
-            return res.status(500).send({
-                message: "Error retrieving subject with name " + req.params.knownAs
-            });
-        });
-};
-
-//delete many subjects of specific sem and department
-exports.deleteByDeptAndSem = (req, res) => {
-    Subject.deleteMany({ deptCode: req.params.deptCode, sem: req.params.sem })
+    // Save subject in the database
+    Subject.save()
     .then(data => {
-        if (data.deletedCount == 0) {
-            return res.status(404).send({
-                message: "Subjects Not Found With Entered Dept " + req.params.deptCode + " And Sem " + req.params.sem + ".!"
-            });
-        }
-        //res.send(data);
-
-        return res.status(404).send({
-            message: "Subjects Deleted Successfully With Entered Dept " + req.params.deptCode + " And Sem " + req.params.sem + ".!"
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the Subject."
         });
+    });
+
+};
+
+// Retrieve and return all subjects from the database.
+ exports.findAll = (req, res) => {
+
+ 	subject.find()
+    .then(subjects => {
+        res.send(subjects);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving subjects."
         });
     });
-};
 
+ };
+
+// // Find a single subject with a code
+ exports.findCode = (req, res) => {
+
+ 	subject.findOne({code:req.params.code})
+    .then(subjects => {
+        if(!subjects) {
+            return res.status(404).send({
+                message: "subject not found with code " + req.params.code
+            });            
+        }
+        res.send(subjects);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "subjects not found with code " + req.params.code
+            });                
+        }
+        return res.status(500).send({
+            message: "Error retrieving subject with code " + req.params.code
+        });
+    });
+
+ };
+// //Find a single subject with a name
+ exports.findName = (req, res) => {
+
+ 	subject.findOne({knownAs:req.params.knownAs})
+    .then(subjects => {
+        if(!subjects) {
+            return res.status(404).send({
+                message: "subject not found with known_As " + req.params.knownAs
+            });            
+        }
+        res.send(subjects);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "subjects not found with known_As " + req.params.knownAs
+            });                
+        }
+        return res.status(500).send({
+            message: "Error retrieving subject with known_As " + req.params.knownAs
+        });
+    });
+
+ };
+
+//  //Find a single subject with a departemnt and sem
+ exports.findDeptSem = (req, res) => {
+
+ 	subject.find({dept_Id:req.params.dept_Id, semester:req.params.semester})
+    .then(subjects => {
+        if(!subjects) {
+            return res.status(404).send({
+                message: "subject not found " + req.params.semester
+            });            
+        }
+        res.send(subjects);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "subjects not found  " + req.params.semester
+            });                
+        }
+        return res.status(500).send({
+            message: "Error retrieving subject " + req.params.semester
+        });
+    });
+
+ };
+// // Update a subject with id
+ exports.update = (req, res) => {
+ 	 // Validate Request
+    if(!req.body.code) {
+        return res.status(400).send({
+            message: "codecan not be empty"
+        });
+    }
+
+    // Find subject and update it with the request body
+    subject.findByIdAndUpdate(req.params.subjectId, {
+        code: req.body.code, 
+         name: req.body.name,
+         knownAs:req.body.knownAs,
+         semester:req.body.semester,
+         deptName:req.body.deptName,
+       
+    }, {new: true})
+    .then(subjects => {
+        if(!subjects) {
+            return res.status(404).send({
+                message: "subject not found with id " + req.params.subjectId
+            });
+        }
+        res.send(subjects);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "subjects not found with id " + req.params.subjectId
+            });                
+        }
+        return res.status(500).send({
+            message: "Error updating subjects with id " + req.params.subjectId
+        });
+    });
+
+ };
+
+// // Delete a subject with the specified code in the request
+ exports.delete = (req, res) => {
+
+ 	subject.findByIdAndRemove(req.params.subjectId)
+    .then(subjects => {
+        if(!subjects) {
+            return res.status(404).send({
+                message: "subject not found with id " + req.params.subjectId
+            });
+        }
+        res.send({message: "subject deleted successfully!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "subject not found with id " + req.params.subjectId
+            });                
+        }
+        return res.status(500).send({
+            message: "Could not delete subjects with id " + req.params.subjectId
+        });
+    });
+
+ };
 
