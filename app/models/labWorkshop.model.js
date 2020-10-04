@@ -15,6 +15,6 @@ const labWorkshopSchema = mongoose.Schema({
     _id: false
 });
 
-labWorkshopSchema.plugin(AutoIncrement);
+labWorkshopSchema.plugin(AutoIncrement, { id: 'labAndWorkshop_id_counter' });
 
 module.exports = mongoose.model('labworkshop',labWorkshopSchema);
