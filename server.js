@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const passport = require('passport');
 
 //create express app
 const app = express();
@@ -10,6 +11,9 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
 //parse requests of content-type - application/json
 app.use(bodyParser.json({ limit: '50mb', extended: true }))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //enabling cors to allow interaction from other domain
 app.use(cors({ origin: 'http://localhost:4200' }))
@@ -64,7 +68,7 @@ require('./app/routes/gallery.routes')(app);
 require('./app/routes/news.routes')(app);
 require('./app/routes/nss.routes')(app);
 require('./app/routes/ss.routes')(app);
-require('./app/routes/users.route.js')(app);
+require('./app/routes/user.route')(app);
 
 require('./app/routes/placement/placement.route.js')(app);
 require('./app/routes/placement/placement_attachments.route')(app);
