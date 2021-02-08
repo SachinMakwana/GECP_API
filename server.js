@@ -89,6 +89,8 @@ require('./app/routes/ssip/ssip_attachments.route')(app);
 require('./app/routes/grievence/grievence_memberDetails.route')(app);
 require('./app/routes/grievence/grievence_attachments.route')(app);
 
+require('./app/routes/Common/MessageOfCommittee.routes')(app);
+
 
 app.listen(3000, () => {
     console.log("Server is listening on port : 3000");
