@@ -3,7 +3,7 @@ const PeopleModel = require("../../models/Common/People.model");
 //create and save college info
 
 exports.create = (req, res) => {
-  const { PageId, Image, Name, Feedback,Type } = req.body;
+  const { PageId, Image, Name, Feedback, Type } = req.body;
 
   //validate request
   /*if (!id) {
@@ -14,7 +14,7 @@ exports.create = (req, res) => {
 
   //create college info
   const data = new PeopleModel({
-    Image,Name,Feedback,PageId,Type
+    Image, Name, Feedback, PageId, Type
   });
 
   //save college info in database
@@ -49,8 +49,8 @@ exports.findAll = (req, res) => {
 
 //find college info with id
 exports.findById = (req, res) => {
-    const { PageId } = req.query;
-   PeopleModel.find({PageId})
+  const { PageId } = req.query;
+  PeopleModel.find({ PageId })
     .then((data) => {
       if (!data) {
         return res.status(404).send({
@@ -121,7 +121,7 @@ exports.findtitle = (req, res) => {
 
 // // Update a college info with id
 exports.updateId = (req, res) => {
-    const { PageId, Image, Title, Message } = req.body;
+  const { PageId, Image, Title, Message } = req.body;
   // Validate Request
   if (!PageId || !Image || !Title || !Message) {
     return res.status(400).send({
@@ -134,9 +134,9 @@ exports.updateId = (req, res) => {
     .findOneAndUpdate(
       PageId,
       {
-        Image:Image,
-        Title:Title,
-        Message:Message,
+        Image: Image,
+        Title: Title,
+        Message: Message,
       },
       { new: true }
     )

@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const { ObjectID } = require('mongodb');
 
 const PeopleSchema = mongoose.Schema({
     Image: String,
     Name: String,
     Feedback: String,
-    PageId: Number,
+    PageId: ObjectID,
     Type: Number,
 }, {
     timestamps: true,

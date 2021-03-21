@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const mongoose = require('mongoose');
 
 const facultySchema = mongoose.Schema({
@@ -18,7 +19,7 @@ const facultySchema = mongoose.Schema({
     phoneNo: Number,
     email: String,
     profileImage: String,
-    deptCode: { type: Number, ref: 'Department' },
+    deptCode: { type: ObjectID, ref: 'Department' },
     createdAtInt: String,
     updatedAtInt: String
 }, {

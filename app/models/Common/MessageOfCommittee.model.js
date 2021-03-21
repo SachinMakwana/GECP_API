@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const { ObjectID } = require('mongodb');
 
 const CommonMessageSchema = mongoose.Schema({
     Image: String,
     Title: String,
     Message: String,
-    PageId: Number
+    PageId: ObjectID
 }, {
     timestamps: true,
     versionKey: false
