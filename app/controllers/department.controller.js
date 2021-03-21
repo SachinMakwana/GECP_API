@@ -3,6 +3,7 @@ const department = require('../models/department.model');
 // Create new department
 exports.create = (req, res) => {
     // Validate request
+    let { body } = req;
     if (!req.body.code) {
         return res.status(400).send({
             message: "Code can not be empty"
@@ -10,12 +11,7 @@ exports.create = (req, res) => {
     }
 
     // Create a dept
-    const dept = new department({
-        code: req.body.code,
-        name: req.body.name,
-        image: req.body.image,
-        about: req.body.about
-    });
+    const dept = new department(body);
 
     // Save dept in the database
     dept.save()
@@ -44,22 +40,23 @@ exports.findAll = (req, res) => {
 
 // // Find department with a code
 exports.findDept = (req, res) => {
-    department.findOne({ code: req.params.code })
+    let { code } = req.query
+    department.findOne({ code: code })
         .then(gecp => {
             if (!gecp) {
                 return res.status(404).send({
-                    message: "department not found  " + req.params.code
+                    message: "department not found  " + code
                 });
             }
             res.send(gecp);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
-                    message: "department not found " + req.params.code
+                    message: "department not found " + code
                 });
             }
             return res.status(500).send({
-                message: "Error retrieving code " + req.params.code
+                message: "Error retrieving code " + code
             });
         });
 

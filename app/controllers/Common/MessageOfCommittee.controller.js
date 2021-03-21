@@ -53,7 +53,7 @@ exports.findAll = (req, res) => {
 //find college info with id
 exports.findById = (req, res) => {
     const { PageId } = req.query;
-   MessageOfCommittee.findById(PageId)
+   MessageOfCommittee.findOne({PageId})
     .then((data) => {
       if (!data) {
         return res.status(404).send({
