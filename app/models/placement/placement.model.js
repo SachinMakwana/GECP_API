@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const placementSchema = mongoose.Schema({
-    _id: Number,
     dateOfCampus: String,
     companyId: { type: Number, ref: 'Company' },
     deptCode: { type: Number, ref: 'Department' },
@@ -13,8 +11,7 @@ const placementSchema = mongoose.Schema({
     updatedAtInt: Number
 }, {
     timestamps: true,
-    _id: false
+    versionKey: false
 });
 
-placementSchema.plugin(AutoIncrement, { id: 'placement_model_id_counter' })
 module.exports = mongoose.model('Placement', placementSchema);

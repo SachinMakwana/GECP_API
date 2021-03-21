@@ -2,12 +2,11 @@ const mongoose = require('mongoose');
 
 const CommonMessageSchema = mongoose.Schema({
     Image: String,
-    Title : String,
-    Message : String,
-    PageId : Number
+    Title: String,
+    Message: String,
+    PageId: Number
 }, {
     timestamps: true,
-    _id: false, 
     versionKey: false
 });
 

@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const labWorkshopSchema = mongoose.Schema({
-    _id: Number,
     name: String,
     category: String,
     image: String,
@@ -10,11 +8,9 @@ const labWorkshopSchema = mongoose.Schema({
     description: String,
     createdAtInt: Number,
     updatedAtInt: Number
-},{
+}, {
     timestamps: true,
-    _id: false
+    versionKey: false
 });
 
-labWorkshopSchema.plugin(AutoIncrement, { id: 'labAndWorkshop_id_counter' });
-
-module.exports = mongoose.model('labworkshop',labWorkshopSchema);
+module.exports = mongoose.model('labworkshop', labWorkshopSchema);

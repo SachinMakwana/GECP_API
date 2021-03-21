@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const facultySchema = mongoose.Schema({
-    _id: Number,
     prefix: String,
     firstName: String,
     lastName: String,
@@ -25,9 +23,7 @@ const facultySchema = mongoose.Schema({
     updatedAtInt: String
 }, {
     timestamps: true,
-    _id: false
+    versionKey: false
 });
-
-facultySchema.plugin(AutoIncrement, { id: 'faculty_model_id_counter' });
 
 module.exports = mongoose.model('Faculties', facultySchema);
