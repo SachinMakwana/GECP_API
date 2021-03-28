@@ -1,5 +1,6 @@
 const Faculty = require('../models/faculty.model.js');
 const Common = require('../../common.js');
+let { ObjectID } = require('mongodb')
 
 exports.createFaculty = (req, res) => {
     //validate the request
@@ -135,26 +136,30 @@ exports.findFacultyByDesignation = (req, res) => {
 };
 
 //find faculty by department code
-exports.findFacultyByDeptCode = (req, res) => {
+exports.findFacultyByDeptCode = async (req, res) => {
+    let { deptCode } = req.query;
     //find by category
-    Faculty.find({ deptCode: req.params.deptCode })
-        .then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Faculty not found with department code " + req.params.deptCode
-                });
+    try {
+        const data = await Faculty.aggregate([
+            {
+                $match: { deptCode: ObjectID(deptCode) },
+            },
+            {
+                $project: {
+                    name: { $concat: ["$firstName", " ", "$lastName"] },
+                    designation: 1,
+                    profileImage: 1,
+                }
             }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Faculty not found with department code " + req.params.deptCode
-                });
-            }
-            return res.status(404).send({
-                message: err.message || "Error while retieving the data."
-            });
+        ]);
+
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: error.message || error
         });
+    }
 };
 
 //update faculty by id or using id
