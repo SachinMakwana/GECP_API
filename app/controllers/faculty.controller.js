@@ -149,6 +149,9 @@ exports.findFacultyByDeptCode = async (req, res) => {
                     name: { $concat: ["$firstName", " ", "$lastName"] },
                     designation: 1,
                     profileImage: 1,
+                    qualification: 1,
+                    experience: 1,
+                    areaOfInterest: 1
                 }
             }
         ]);
