@@ -19,8 +19,8 @@ exports.create = (req, res) => {
     });
 };
 
-exports.findAll = (req, res) => {
-    Details.find()
+exports.findDetails = (req, res) => {
+    Details.findOne()
         .then(member => {
             res.send(member);
         }).catch(err => {
@@ -51,32 +51,33 @@ exports.findById = (req, res) => {
         });
 };
 
-exports.updateById = (req, res) => {
-    if (!req.body.description) {
+exports.updateId = (req, res) => {
+    let { body } = req;
+    let { _id } = body;
+    // Validate Request
+    /* if(!req.body.women_description) {
         return res.status(400).send({
-            message: "Anti Ragging  details can not be empty"
+            message: "id not be empty"
         });
-    }
+    } */
 
-    // Find code and update 
-    Details.findOneAndUpdate({ _id: req.params._id }, {
-        description: req.body.description
-    }, { new: true })
-        .then(member => {
-            if (!member) {
+    // Find  info and update it with the request body
+    Details.findByIdAndUpdate(_id, body, { new: true })
+        .then(details => {
+            if (!details) {
                 return res.status(404).send({
-                    message: "Anti Ragging Info not found with id " + req.params._id
+                    message: "info not found with id " + _id
                 });
             }
-            res.send(member);
+            res.send(details);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
-                    message: "Anti Ragging Info not found with id " + req.params._id
+                    message: "info not found with id " + _id
                 });
             }
             return res.status(500).send({
-                message: "Error updating Contact Info with id " + req.params._id
+                message: "Error updating info with id " + _id
             });
         });
 };
@@ -100,4 +101,4 @@ exports.deleteById = (req, res) => {
                 message: "Could not delete Anti Ragging Info with id " + req.params._id
             });
         });
-}; 
+};

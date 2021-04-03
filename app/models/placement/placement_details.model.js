@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
-const anti_ragging_detailsSchema = mongoose.Schema({
+const Placement_detailsSchema = mongoose.Schema({
     description: String,
     measure: String,
     image: String,
 }, {
     timestamps: true,
     versionKey: false
-});
+}
+);
 
-module.exports = mongoose.model('AntiRagging_Details', anti_ragging_detailsSchema);
+module.exports = mongoose.model('Placement_Details', Placement_detailsSchema);

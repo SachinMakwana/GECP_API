@@ -19,8 +19,8 @@ exports.create = (req, res) => {
     });
 };
 
-exports.findAll = (req, res) => {
-    Details.find()
+exports.findDetails = (req, res) => {
+    Details.findOne()
         .then(s_details => {
             res.send(s_details);
         }).catch(err => {
@@ -52,31 +52,30 @@ exports.findById = (req, res) => {
 };
 
 exports.updateById = (req, res) => {
-    if (!req.body.description) {
-        return res.status(400).send({
-            message: "SSIP  details can not be empty"
-        });
-    }
-
+    let { body } = req, { _id } = body;
+    /*  if (!req.body.description) {
+         return res.status(400).send({
+             message: "Grievence Cell details can not be empty"
+         });
+     }
+  */
     // Find code and update 
-    Details.findOneAndUpdate({ _id: req.params._id }, {
-        description: req.body.description
-    }, { new: true })
-        .then(s_details => {
-            if (!s_details) {
+    Details.findByIdAndUpdate(_id, body, { new: true })
+        .then(details => {
+            if (!details) {
                 return res.status(404).send({
-                    message: " Info not found with id " + req.params._id
+                    message: "SSIP Cell Info not found with id " + _id
                 });
             }
-            res.send(s_details);
+            res.send(details);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
-                    message: "Contact Info not found with id " + req.params._id
+                    message: "SSIP Cell Info not found with id " + _id
                 });
             }
             return res.status(500).send({
-                message: "Error updating Contact Info with id " + req.params._id
+                message: "Error updating SSIP Cell Info with id " + _id
             });
         });
 };
@@ -100,4 +99,4 @@ exports.deleteById = (req, res) => {
                 message: "Could not delete ssip Info with id " + req.params._id
             });
         });
-}; 
+};

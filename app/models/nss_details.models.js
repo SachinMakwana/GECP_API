@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const anti_ragging_detailsSchema = mongoose.Schema({
+const nss_detailSchema = mongoose.Schema({
     description: String,
     measure: String,
     image: String,
@@ -9,4 +9,4 @@ const anti_ragging_detailsSchema = mongoose.Schema({
     versionKey: false
 });
 
-module.exports = mongoose.model('AntiRagging_Details', anti_ragging_detailsSchema);
+module.exports = mongoose.model('NssDetail', nss_detailSchema);

@@ -1,4 +1,5 @@
 const nss = require('../models/nss.models');
+const nss_details = require('../models/nss_details.models');
 const fs = require('fs');
 const common = require('../../common');
 //create and save nss info
@@ -16,7 +17,7 @@ exports.create = (req, res) => {
     const Nss = new nss({
         nss_title: req.body.nss_title,
         nss_fileName: req.body.nss_fileName,
-        nss_filePath: "./Uploads/nss/" +req.body.nss_fileName
+        nss_filePath: "./Uploads/nss/" + req.body.nss_fileName
     });
 
     //save the nss
@@ -34,19 +35,80 @@ exports.create = (req, res) => {
 };
 
 
+//create basic details
+exports.createBasicDetails = (req, res) => {
+    let { body } = req;
+    /* if (!req.body.description) {
+        return res.status(400).send({
+            message: "Please add Grievence Cell Info "
+        });
+    } */
+    const details = new nss_details(body);
+
+    details.save().then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        });
+    });
+};
+
+//update basi details by id
+exports.updateById = (req, res) => {
+    let { body } = req, { _id } = body;
+    /*  if (!req.body.description) {
+         return res.status(400).send({
+             message: "Grievence Cell details can not be empty"
+         });
+     }
+  */
+    // Find code and update 
+    nss_details.findByIdAndUpdate(_id, body, { new: true })
+        .then(details => {
+            if (!details) {
+                return res.status(404).send({
+                    message: "NSS Cell Info not found with id " + _id
+                });
+            }
+            res.send(details);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "NSS Cell Info not found with id " + _id
+                });
+            }
+            return res.status(500).send({
+                message: "Error updating NSS Cell Info with id " + _id
+            });
+        });
+};
+
+
+//retrive details
+exports.findDetails = (req, res) => {
+    nss_details.findOne()
+        .then(nsss => {
+            res.send(nsss);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving info."
+            });
+        });
+};
 
 //retrive and return nss info
 
-exports.findAll = (req,res) =>{
+exports.findAll = (req, res) => {
 
-	nss.find()
-	.then(nsss =>{
-		res.send(nsss);
-	}).catch(err=>{
-		res.status(500).send({
-			message: err.message || "Some error occurred while retrieving info."
-		});
-	});
+    nss.find()
+        .then(nsss => {
+            res.send(nsss);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving info."
+            });
+        });
 
 };
 
@@ -60,8 +122,8 @@ exports.findNssById = (req, res) => {
                     message: "Nss not found with id " + req.params.nssId
                 });
             }
-            const contents = fs.readFileSync(data.nss_filePath, {encoding: 'base64'});
-            data.set('File',contents.toString(),{strict:false});
+            const contents = fs.readFileSync(data.nss_filePath, { encoding: 'base64' });
+            data.set('File', contents.toString(), { strict: false });
             res.send(data);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
@@ -87,9 +149,9 @@ exports.updateId = (req, res) => {
     }
 
     //save the nss
-    if(req.body.file != null) {
+    if (req.body.file != null) {
         let buff = new Buffer.from(req.body.file, 'base64');
-        let nss_filePath =  "./Uploads/nss/" +req.body.nss_fileName
+        let nss_filePath = "./Uploads/nss/" + req.body.nss_fileName
         fs.writeFileSync(nss_filePath, buff);
         console.log("file Updated");
     }
@@ -98,52 +160,52 @@ exports.updateId = (req, res) => {
     nss.findByIdAndUpdate(req.params.nssId, {
         nss_title: req.body.nss_title,
         nss_fileName: req.body.nss_fileName,
-        nss_filePath: "./Uploads/nss/" +req.body.nss_fileName
+        nss_filePath: "./Uploads/nss/" + req.body.nss_fileName
     }, {
         new: true
     }).then(data => {
-            if (!data) {
-                return res.status(404).send({
-                    message: "Nss not found with id " + req.params.nssId
-                });
-            }
-            res.send(data);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Nss not found with id " + req.params.nssId
-                });
-            }
-            return res.status(500).send({
-                message: "Error retrieving nss with id " + req.params.nssId
+        if (!data) {
+            return res.status(404).send({
+                message: "Nss not found with id " + req.params.nssId
             });
+        }
+        res.send(data);
+    }).catch(err => {
+        if (err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Nss not found with id " + req.params.nssId
+            });
+        }
+        return res.status(500).send({
+            message: "Error retrieving nss with id " + req.params.nssId
         });
+    });
 };
 
 
 // // Delete a nss info with the specified id in the request
- exports.deleteById = (req, res) => {
+exports.deleteById = (req, res) => {
 
- 	nss.findOneAndRemove(req.params.nssId)
-    .then(nsss => {
-        if(!nsss) {
-            return res.status(404).send({
-                message: "info not found with id " + req.params.nssId
+    nss.findOneAndRemove(req.params.nssId)
+        .then(nsss => {
+            if (!nsss) {
+                return res.status(404).send({
+                    message: "info not found with id " + req.params.nssId
+                });
+            }
+            res.send({ message: "info deleted successfully!" });
+        }).catch(err => {
+            if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                return res.status(404).send({
+                    message: "info not found with id " + req.params.nssId
+                });
+            }
+            return res.status(500).send({
+                message: "Could not delete info with id " + req.params.nssId
             });
-        }
-        res.send({message: "info deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "info not found with id " + req.params.nssId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete info with id " + req.params.nssId
         });
-    });
 
- };
+};
 
 
 

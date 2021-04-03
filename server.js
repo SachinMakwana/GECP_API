@@ -86,6 +86,7 @@ require('./app/routes/ssip/ssip_details.route')(app);
 require('./app/routes/ssip/ssip_memberDetails.route')(app);
 require('./app/routes/ssip/ssip_attachments.route')(app);
 
+require('./app/routes/grievence/grievence_details.route')(app);
 require('./app/routes/grievence/grievence_memberDetails.route')(app);
 require('./app/routes/grievence/grievence_attachments.route')(app);
 

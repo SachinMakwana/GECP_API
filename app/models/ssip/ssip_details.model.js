@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
 const ssip_detailsSchema = mongoose.Schema({
-    description: String
+    description: String,
+    measure: String,
+    image: String,
 }, {
     timestamps: true,
     versionKey: false
 }
 );
 
-module.exports = mongoose.model('Details', ssip_detailsSchema);
+module.exports = mongoose.model('SSIP_Details', ssip_detailsSchema);

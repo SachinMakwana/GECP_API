@@ -1,23 +1,26 @@
 module.exports = (app) => {
-    const nss = require('../controllers/nss.controller');
+  const nss = require('../controllers/nss.controller');
 
-    // Create a new nss info
-    app.post('/nss', nss.create);
+  // Create a new nss info
+  app.post('/nss', nss.create);
 
-    // // Retrieve all nss info
-     app.get('/nss', nss.findAll);
+  app.post('/nssDetails', nss.createBasicDetails);
 
-    // // Retrieve a single nss info with id
-   app.get('/nss/:nssId', nss.findNssById);
+  app.get('/nssDetails', nss.findDetails);
 
+  // Retrieve all nss info
+  app.get('/nss', nss.findAll);
 
-   
-//     // // Update a nss info with id
+  // Retrieve a single nss info with id
+  app.get('/nss/:nssId', nss.findNssById);
+
+  // Update a nss info with id
   app.put('/nss/:nssId', nss.updateId);
 
+  app.put('/nssDetails', nss.updateById);
 
-//     // // Delete a nss info with id
-     app.delete('/nss/:nssId', nss.deleteById);
+  // Delete a nss info with id
+  app.delete('/nss/:nssId', nss.deleteById);
 
 
 }

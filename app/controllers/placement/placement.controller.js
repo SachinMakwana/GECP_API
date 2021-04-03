@@ -1,4 +1,5 @@
 const Placement = require('../../models/placement/placement.model');
+const Placement_Details = require('../../models/placement/placement_details.model');
 const Common = require('../../../common.js');
 
 exports.createPlacement = (req, res) => {
@@ -31,6 +32,76 @@ exports.createPlacement = (req, res) => {
             });
         });
 };
+
+//create basic details
+exports.createBasicDetails = (req, res) => {
+    let { body } = req;
+    /* if (!req.body.description) {
+        return res.status(400).send({
+            message: "Please add Grievence Cell Info "
+        });
+    } */
+    const details = new Placement_Details(body);
+
+    details.save().then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        });
+    });
+};
+
+//update basi details by id
+exports.updateById = (req, res) => {
+    let { body } = req, { _id } = body;
+    /*  if (!req.body.description) {
+         return res.status(400).send({
+             message: "Grievence Cell details can not be empty"
+         });
+     }
+  */
+    // Find code and update 
+    Placement_Details.findByIdAndUpdate(_id, body, { new: true })
+        .then(g_details => {
+            if (!g_details) {
+                return res.status(404).send({
+                    message: "Placement Cell Info not found with id " + _id
+                });
+            }
+            res.send(g_details);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Placement Cell Info not found with id " + _id
+                });
+            }
+            return res.status(500).send({
+                message: "Error updating Placement Cell Info with id " + _id
+            });
+        });
+};
+
+
+//find placement details
+exports.findPlacementDetails = (req, res) => {
+
+    //retrieving all the placement data
+    Placement_Details.findOne()
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    message: "Placement Not Found."
+                });
+            }
+            res.send(data);
+        }).catch(err => {
+            return res.status(404).send({
+                message: err.message || "Error while retrievig companies."
+            });
+        });
+};
+
 
 //find all placement data
 exports.findAllPlacement = (req, res) => {
@@ -124,7 +195,7 @@ exports.findPlacementByCompanyId = (req, res) => {
 //find placement data from package range
 exports.findPlacementByPackageRange = (req, res) => {
     //find by name
-    Placement.find({ lowestPkg :{ $lte: req.params.lowestPkg } , highestPkg: { $gte: req.params.highestPkg }})
+    Placement.find({ lowestPkg: { $lte: req.params.lowestPkg }, highestPkg: { $gte: req.params.highestPkg } })
         .then(data => {
             if (!data) {
                 return res.status(404).send({
@@ -147,7 +218,7 @@ exports.findPlacementByPackageRange = (req, res) => {
 //find placement data by students taken or greater
 exports.findPlacementByStudentsTaken = (req, res) => {
     //find by name
-    Placement.find({ studentsTaken : { $gte: req.params.students }})
+    Placement.find({ studentsTaken: { $gte: req.params.students } })
         .then(data => {
             if (!data) {
                 return res.status(404).send({
@@ -209,23 +280,23 @@ exports.updatePlacementById = (req, res) => {
 };
 
 //delete placement by id
-exports.deletePlacementById = (req,res) => {
+exports.deletePlacementById = (req, res) => {
     Placement.findByIdAndDelete(req.params.id)
-    .then(data => {
-        if (!data) {
-            return res.status(404).send({
-                message: "Placement not found with id " + req.params.id
+        .then(data => {
+            if (!data) {
+                return res.status(404).send({
+                    message: "Placement not found with id " + req.params.id
+                });
+            }
+            res.send(data);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Placement not found with id " + req.params.id
+                });
+            }
+            return res.status(500).send({
+                message: "Error deleting Placement with id " + req.params.id
             });
-        }
-        res.send(data);
-    }).catch(err => {
-        if (err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Placement not found with id " + req.params.id
-            });
-        }
-        return res.status(500).send({
-            message: "Error deleting Placement with id " + req.params.id
         });
-    });
 }

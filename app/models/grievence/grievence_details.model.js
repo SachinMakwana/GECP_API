@@ -1,13 +1,14 @@
-/*const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+const mongoose = require('mongoose');
 
 const grievence_detailsSchema = mongoose.Schema({
-    _id: Number,
+    description: String,
+    measure: String,
+    image: String,
 }, {
-    _id: false
+    timestamps: true,
+    versionKey: false
 }
 );
 
-grievence_detailsSchema.plugin(AutoIncrement, { id: 'grievence_details_model_id_counter' });
 
-module.exports = mongoose.model('Details', grievence_detailsSchema); */
+module.exports = mongoose.model('Grievance_Details', grievence_detailsSchema);

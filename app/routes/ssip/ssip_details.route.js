@@ -3,13 +3,13 @@ module.exports = (app) => {
 
     app.post('/ssip_details', s_details.create);
 
-    app.get('/ssip_details', s_details.findAll);
+    app.get('/ssip_details', s_details.findDetails);
 
     app.get('/ssip_details/:_id', s_details.findById);
 
-    app.put('/ssip_details/:_id', s_details.updateById);
+    app.put('/ssip_details', s_details.updateById);
 
     app.delete('/ssip_details/:_id', s_details.deleteById);
-   
+
 }
 
