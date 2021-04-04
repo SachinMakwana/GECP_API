@@ -4,6 +4,7 @@ const nss_detailSchema = mongoose.Schema({
     description: String,
     measure: String,
     image: String,
+    coverPhoto: String,
 }, {
     timestamps: true,
     versionKey: false

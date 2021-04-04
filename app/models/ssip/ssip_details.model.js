@@ -4,6 +4,7 @@ const ssip_detailsSchema = mongoose.Schema({
     description: String,
     measure: String,
     image: String,
+    coverPhoto: String,
 }, {
     timestamps: true,
     versionKey: false
