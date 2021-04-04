@@ -93,6 +93,7 @@ require('./app/routes/grievence/grievence_attachments.route')(app);
 require('./app/routes/Common/MessageOfCommittee.routes')(app);
 require('./app/routes/Common/People.routes')(app);
 require('./app/routes/Common/VissionMission.routes')(app);
+require('./app/routes/Common/CommitteMembers.routes')(app);
 
 
 app.listen(3000, () => {
