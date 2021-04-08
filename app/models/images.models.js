@@ -1,13 +1,15 @@
+const { ObjectID } = require('mongodb');
 const mongoose = require('mongoose');
 
-const GallerySchema = mongoose.Schema({
+const ImageSchema = mongoose.Schema({
     title: String,
     image: String,
     category: String,
     categoryClass: String,
+    PageId: ObjectID
 }, {
     timestamps: true,
     versionKey: false
 });
 
-module.exports = mongoose.model('Gallery', GallerySchema);
+module.exports = mongoose.model('Image', ImageSchema);

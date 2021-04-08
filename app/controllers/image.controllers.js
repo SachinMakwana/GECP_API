@@ -1,9 +1,10 @@
-const gallery = require('../models/gallery.models');
+const ImageModel = require('../models/images.models');
 const common = require('../../common');
 //create and save gallery info
 
 exports.create = (req, res) => {
     let { body } = req;
+
     //validate request
     // if(!req.body.title){
     // 	return res.status(400).send({
@@ -12,13 +13,13 @@ exports.create = (req, res) => {
     // }
 
     //create gallery info
-
     let saveBody = {
         ...body,
         categoryClass: body.category ? body.category.replace(/[^A-Z0-9]+/ig, "") : ''
     }
 
-    const Gallery = new gallery(saveBody);
+
+    const Gallery = new ImageModel(saveBody);
 
     //save gallery info in database
 
@@ -35,7 +36,7 @@ exports.create = (req, res) => {
 //retrive and return all the gallery from database
 
 exports.findAll = (req, res) => {
-    gallery.find()
+    ImageModel.find()
         .then(gallerys => {
             res.send(gallerys);
         }).catch(err => {
@@ -48,7 +49,7 @@ exports.findAll = (req, res) => {
 
 //find gallery info with id
 exports.findById = (req, res) => {
-    gallery.findById(req.params.galleryId)
+    ImageModel.findById(req.params.galleryId)
         .then(gallerys => {
             if (!gallerys) {
                 return res.status(404).send({
@@ -72,7 +73,7 @@ exports.findById = (req, res) => {
 //find gallery info with title
 exports.findtitle = (req, res) => {
 
-    gallery.findOne({ title: req.params.title })
+    ImageModel.findOne({ title: req.params.title })
         .then(gallerys => {
             if (!gallerys) {
                 return res.status(404).send({
@@ -96,12 +97,6 @@ exports.findtitle = (req, res) => {
 // // Update a gallery info with id
 exports.updateId = (req, res) => {
     // Validate Request
-    /* if (!req.body.title) {
-        return res.status(400).send({
-            message: "title not be empty"
-        });
-    } */
-
     let { body } = req, { _id } = body;
     let updateBody = {
         ...body,
@@ -109,7 +104,7 @@ exports.updateId = (req, res) => {
     }
 
     // Find gallery info and update it with the request body
-    gallery.findByIdAndUpdate(_id, updateBody, { new: true })
+    ImageModel.findByIdAndUpdate(_id, updateBody, { new: true })
         .then(gallerys => {
             if (!gallerys) {
                 return res.status(404).send({
