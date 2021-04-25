@@ -42,15 +42,26 @@ exports.create = (req, res) => {
 exports.findAll = async (req, res) => {
   try {
     const { PageId } = req.query;
+    let filteredArr = [];
+
     if (!ObjectID.isValid(PageId)) throw new Error("Please enter valid PageId");
-    const categoryClassData = await ImageModel.find({ PageId }).distinct(
-      "categoryClass"
+
+    const categoryClassData = await ImageModel.find(
+      { PageId },
+      { _id: 0, category: 1, categoryClass: 1 }
     );
 
     const imageData = await ImageModel.find({ PageId });
 
+    const key = "categoryClass";
+    if (categoryClassData && categoryClassData.length) {
+      filteredArr = [
+        ...new Map(categoryClassData.map((item) => [item[key], item])).values(),
+      ];
+    }
+
     res.send({
-      categoryClass: categoryClassData,
+      categoryClass: filteredArr.length ? filteredArr : [],
       data: imageData,
     });
   } catch (err) {

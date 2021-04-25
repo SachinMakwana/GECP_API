@@ -40,12 +40,23 @@ exports.create = (req, res) => {
 
 exports.findAll = async (req, res) => {
   try {
+    let filteredArr = [];
     const galleryData = await gallery.find();
 
-    const categoryClassData = await gallery.find().distinct("categoryClass");
+    const categoryClassData = await gallery.find(
+      {},
+      { _id: 0, category: 1, categoryClass: 1 }
+    );
+
+    const key = "categoryClass";
+    if (categoryClassData && categoryClassData.length) {
+      filteredArr = [
+        ...new Map(categoryClassData.map((item) => [item[key], item])).values(),
+      ];
+    }
 
     res.send({
-      categoryClass: categoryClassData,
+      categoryClass: filteredArr.length ? filteredArr : [],
       data: galleryData,
     });
   } catch (err) {
